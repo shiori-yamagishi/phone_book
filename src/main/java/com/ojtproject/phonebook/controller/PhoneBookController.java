@@ -18,6 +18,7 @@ public class PhoneBookController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(ModelAndView mav) {
 		return search(new SearchForm(), mav);
+		//test
 	}
 
 	/**検索ロジックを呼び出して検索ページへ遷移*/
