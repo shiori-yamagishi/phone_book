@@ -28,4 +28,10 @@ public class PhoneBookController {
 		return mav;
 	}
 
+	@RequestMapping(value = "/regist", method = RequestMethod.POST)
+	public ModelAndView registInit(ModelAndView mav) {
+		mav.setViewName("regist");
+		return mav;
+	}
+
 }

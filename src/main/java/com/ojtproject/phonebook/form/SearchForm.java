@@ -1,6 +1,7 @@
 package com.ojtproject.phonebook.form;
 
 public class SearchForm {
+
 	public String getKeyword() {
 		return keyword;
 	}

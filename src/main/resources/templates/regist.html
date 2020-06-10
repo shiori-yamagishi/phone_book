@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/style.css">
+<title>電話帳システム</title>
+</head>
+<body>
+    <h1>新規登録します。</h1>
+    <h2>登録者と電話番号を入力してください。</h2>
+    <form th:action="@{/create}" th:object="${customerForm}" method="post">
+        <table>
+            <tr>
+                <th>登録者</th>
+                <td><input type="text" name="name" th:field="*{name}"></td>
+            </tr>
+            <tr>
+                <th>電話番号</th>
+                <td><input type="text" name="phoneNumber" th:field="*{phoneNumber}"></td>
+            </tr>
+        </table>
+        <input type="submit" value="電話帳に追加">
+    </form>
+</body>
+</html>

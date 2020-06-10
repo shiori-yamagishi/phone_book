@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+.msg {
+	color: red;
+}
+
+body {
+	background-color: #f0f8ff;
+	margin: 0;
+	text-align: center;
+}
+
+h1 {
+	background-color: #b0c4de;
+}
+
+#table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.accountInfo {
+	margin-top: 20px;
+	margin-right: 10px;
+	text-align: right;
+}
+
+.button {
+	display: inline-flex;
+	margin-bottom: 10px;
+}

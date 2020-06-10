@@ -27,11 +27,11 @@ public interface PhoneBookRepository extends JpaRepository<PhoneBook, Long> {
 	@Modifying
 	@Transactional
 	@Query(value = "INSERT INTO phone_book (name,phone_number,id) VALUES (:name,:phoneNumber,:Id)", nativeQuery = true)
-	public void regist(String name, String phoneNumber, int Id);
+	public void regist(String name, String phoneNumber);
 
 	//**更新SQL*/
 	@Modifying
 	@Transactional
 	@Query(value = "UPDATE phone_book SET name = :name, phone_number = :phoneNumber ,id = :Id WHERE id = :id", nativeQuery = true)
-	public void update(String name, String phoneNumber, int id);
+	public void update(String name, String phoneNumber);
 }
