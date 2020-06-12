@@ -31,16 +31,17 @@ public class SearchService {
 		if (keyword == null) {
 			phoneBookList = phoneBookRepository.findAll();
 		} else if (!keyword.equals("")) {
-
+			/*phoneBookList = phoneBookRepository.findResult(keyword);*/
 		}
-
 		session.setAttribute("phoneBookList", phoneBookList);
+
 		for (int i = 0; i < phoneBookList.size(); i++) {
 			PhoneBook entity = phoneBookList.get(i);
 			SearchResultForm sf = new SearchResultForm();
 			sf.setName(entity.getName());
 			sf.setPhoneNumber(entity.getPhoneNumber());
 			searchList.add(sf);
+			//System.out.println("null");
 		}
 		mav.addObject("searchList", searchList);
 		mav.setViewName("search");
@@ -57,4 +58,5 @@ public class SearchService {
 			mav.addObject("msg", searchList.size() + Message.SEARCH_HIT_COUNT);
 		}*/
 	}
+
 }

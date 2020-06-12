@@ -8,7 +8,7 @@
 <body>
 <h1>電話帳</h1>
 <h2>登録者一覧</h2>
-<a th:href="@{/create}">追加</a>
+<button type ="submit" class ="btn btn - default" th:href="@{/create}">追加</button>
 <span class="msg" th:text="${msg}"></span>
 <form method="post" action="/search">
 <span>名前：</span>

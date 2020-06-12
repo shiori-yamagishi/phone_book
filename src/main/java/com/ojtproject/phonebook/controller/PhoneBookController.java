@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ojtproject.phonebook.form.RegistForm;
 import com.ojtproject.phonebook.form.SearchForm;
 import com.ojtproject.phonebook.service.SearchService;
 
@@ -31,7 +32,14 @@ public class PhoneBookController {
 	@RequestMapping(value = "/regist", method = RequestMethod.POST)
 	public ModelAndView registInit(ModelAndView mav) {
 		mav.setViewName("regist");
-		return mav;
+		return regist(new RegistForm(), mav);
+	}
+
+	@RequestMapping(value = "/regist/new", method = RequestMethod.POST)
+	public ModelAndView regist(RegistForm input, ModelAndView mav) {
+		regist(input, mav);
+		mav.setViewName("regist");
+		return registInit(mav);
 	}
 
 }
