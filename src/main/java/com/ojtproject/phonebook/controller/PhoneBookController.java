@@ -8,16 +8,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ojtproject.phonebook.form.RegistForm;
 import com.ojtproject.phonebook.form.SearchForm;
+import com.ojtproject.phonebook.service.RegistService;
 import com.ojtproject.phonebook.service.SearchService;
 
 @Controller
 public class PhoneBookController {
 	@Autowired
 	private SearchService search;
+	@Autowired
+	private RegistService regist;
 
 	/**トップページを表示*/
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView index(ModelAndView mav) {
+	public ModelAndView searchInit(ModelAndView mav) {
 		return search(new SearchForm(), mav);
 
 	}
@@ -29,17 +32,15 @@ public class PhoneBookController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/regist", method = RequestMethod.POST)
+	@RequestMapping(value = "/regist", method = RequestMethod.GET)
 	public ModelAndView registInit(ModelAndView mav) {
-		mav.setViewName("regist");
 		return regist(new RegistForm(), mav);
 	}
 
 	@RequestMapping(value = "/regist/new", method = RequestMethod.POST)
 	public ModelAndView regist(RegistForm input, ModelAndView mav) {
-		regist(input, mav);
-		mav.setViewName("regist");
-		return registInit(mav);
+		regist.regist(input, mav);
+		return searchInit(mav);
 	}
 
 }

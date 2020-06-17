@@ -1,6 +1,17 @@
 package com.ojtproject.phonebook.form;
 
 public class SearchResultForm {
+
+	private int id;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	/**検索で一致した名前*/
 	private String name;
 	/**検索で一致した電話番号*/

@@ -17,9 +17,9 @@ public class RegistService {
 	@Autowired
 	private PhoneBookRepository phoneBookRepository;
 
-	public void regist(RegistForm rf, ModelAndView mav) {
-		String name = rf.getName();
-		String phoneNumber = rf.getPhoneNumber();
+	public void regist(RegistForm input, ModelAndView mav) {
+		String name = input.getName();
+		String phoneNumber = input.getPhoneNumber();
 
 		phoneBookRepository.regist(name, phoneNumber);
 	}

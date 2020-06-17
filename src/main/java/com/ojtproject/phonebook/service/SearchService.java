@@ -24,14 +24,16 @@ public class SearchService {
 
 	/**入力された名前と電話帳リストにある名前を比較して合致するものをListに格納するメソッド*/
 	public void execute(SearchForm input, ModelAndView mav) {
-		List<PhoneBook> phoneBookList = null;
+		List<PhoneBook> phoneBookList = new ArrayList<>();
 		String keyword = input.getKeyword();//入力された名前を取得
 
 		List<SearchResultForm> searchList = new ArrayList<>();
 		if (keyword == null) {
 			phoneBookList = phoneBookRepository.findAll();
+		} else if (keyword.equals("")) {
+			phoneBookList = phoneBookRepository.findAll();
 		} else if (!keyword.equals("")) {
-			/*phoneBookList = phoneBookRepository.findResult(keyword);*/
+			phoneBookList = phoneBookRepository.findResult(keyword);
 		}
 		session.setAttribute("phoneBookList", phoneBookList);
 
