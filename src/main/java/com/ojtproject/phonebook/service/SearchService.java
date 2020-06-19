@@ -41,6 +41,7 @@ public class SearchService {
 		for (int i = 0; i < phoneBookList.size(); i++) {
 			PhoneBook entity = phoneBookList.get(i);
 			SearchResultForm sf = new SearchResultForm();
+			sf.setId(entity.getId());
 			sf.setName(entity.getName());
 			sf.setPhoneNumber(entity.getPhoneNumber());
 			searchList.add(sf);

@@ -31,12 +31,13 @@ public interface PhoneBookRepository extends JpaRepository<PhoneBook, Long> {
 	//**登録SQL*/
 	@Modifying
 	@Transactional
-	@Query(value = "INSERT INTO phone_book (name,phone_number,id) VALUES (:name,:phoneNumber,:id)", nativeQuery = true)
-	public void regist(@Param("name") String name, @Param("phoneNumber") String phoneNumber, @Param("id") int id);
+	@Query(value = "INSERT INTO phone_book (name,phone_number) VALUES (:name,:phoneNumber)", nativeQuery = true)
+	public void regist(@Param("name") String name, @Param("phoneNumber") String phoneNumber);
 
 	//**更新SQL*/
 	@Modifying
 	@Transactional
-	@Query(value = "UPDATE phone_book SET name = :name, phone_number = :phoneNumber ,id = :Id WHERE id = :id", nativeQuery = true)
+	@Query(value = "UPDATE phone_book SET name = :name, phone_number = :phoneNumber ,id = :id WHERE id = :id", nativeQuery = true)
 	public void update(@Param("name") String name, @Param("phoneNumber") String phoneNumber, @Param("id") int id);
+
 }

@@ -9,19 +9,20 @@
 	<h1>編集します。</h1>
 	<h2>登録者と電話番号を入力してください。</h2>
 
-	<form action="/update/new" method="post">
+	<form action="/updatenew" method="post">
 		<table>
 			<tr>
 				<th>登録者</th>
-				<td><input type="text" name="name"></td>
+				<td><input type="text" name="name" th:value="${name}"></td>
 			</tr>
 			<tr>
 				<th>電話番号</th>
-				<td><input type="text" name="phoneNumber"></td>
+				<td><input type="text" name="phoneNumber" th:value="${phoneNumber}"></td>
 			</tr>
 		</table>
-		<input type="submit" name="update" value="編集"
+		<input type="submit" name="update" value="編集完了"
 			style="position: relative; top: 30px" />
+			<input type="hidden" name="id" th:value="${id}">
 	</form>
 </body>
 </html>

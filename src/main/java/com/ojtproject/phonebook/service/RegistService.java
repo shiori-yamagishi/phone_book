@@ -20,11 +20,10 @@ public class RegistService {
 	}
 
 	public void regist(RegistForm input, ModelAndView mav) {
-		int id = input.getId();
 		String name = input.getName();
 		String phoneNumber = input.getPhoneNumber();
 
-		phoneBookRepository.regist(name, phoneNumber, id);
+		phoneBookRepository.regist(name, phoneNumber);
 	}
 
 }

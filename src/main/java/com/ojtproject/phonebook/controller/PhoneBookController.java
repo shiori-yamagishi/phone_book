@@ -36,24 +36,28 @@ public class PhoneBookController {
 		return mav;
 	}
 
+	//**削除処理を行う*/
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ModelAndView delete(ModelAndView mav, @RequestParam(value = "id", required = true) int id) {
 		search.delete(mav, id);
 		return searchInit(mav);
 	}
 
-	@RequestMapping(value = "/regist", method = RequestMethod.POST)
+	//**追加画面を表示*/
+	@RequestMapping(value = "/regist", method = RequestMethod.GET)
 	public ModelAndView registInit(ModelAndView mav) {
 		regist.registInit(mav);
 		return mav;
 	}
 
-	@RequestMapping(value = "/regist/new", method = RequestMethod.POST)
+	//**追加処理を行う*/
+	@RequestMapping(value = "/registnew", method = RequestMethod.POST)
 	public ModelAndView regist(RegistForm input, ModelAndView mav) {
 		regist.regist(input, mav);
 		return searchInit(mav);
 	}
 
+	//**編集画面を表示*/
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ModelAndView updateInit(ModelAndView mav, @RequestParam(value = "id", required = true) int id,
 			@RequestParam(value = "name", required = true) String name,
@@ -62,7 +66,8 @@ public class PhoneBookController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/update/new", method = RequestMethod.POST)
+	//編集処理を行う*/
+	@RequestMapping(value = "/updatenew", method = RequestMethod.POST)
 	public ModelAndView update(UpdateForm input, ModelAndView mav,
 			@RequestParam(value = "id", required = true) int id) {
 		update.update(input, mav, id);
