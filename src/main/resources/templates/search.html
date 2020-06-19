@@ -34,19 +34,21 @@
 			<td th:text="${phoneBook.phoneNumber}"></td>
 			<td>
 				<form method="post" action="/update" th:object="${inputForm}">
+					<input type="hidden" name="id" th:value="${phoneBook.id}">
 					<input type="hidden" name="name" th:value="${phoneBook.name}">
 					<input type="hidden" name="phoneNumber"
 						th:value="${phoneBook.phoneNumber}"> <input type="submit"
-						value="🔃" />
+						value="更新" />
 				</form>
 			</td>
 			<td>
 				<form method="post" action="/delete" th:object="${inputForm}"
 					onsubmit="return submitChk()">
+					<input type="hidden" name="id" th:value="${phoneBook.id}">
 					<input type="hidden" name="name" th:value="${phoneBook.name}">
 					<input type="hidden" name="phoneNumber"
 						th:value="${phoneBook.phoneNumber}"> <input type="submit"
-						value="🚮" />
+						value="削除" />
 				</form>
 			</td>
 		</tr>

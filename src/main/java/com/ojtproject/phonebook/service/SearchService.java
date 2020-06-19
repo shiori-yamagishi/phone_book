@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ojtproject.phonebook.dao.PhoneBookRepository;
@@ -23,7 +24,7 @@ public class SearchService {
 	private PhoneBookRepository phoneBookRepository;
 
 	/**入力された名前と電話帳リストにある名前を比較して合致するものをListに格納するメソッド*/
-	public void execute(SearchForm input, ModelAndView mav) {
+	public void search(SearchForm input, ModelAndView mav) {
 		List<PhoneBook> phoneBookList = new ArrayList<>();
 		String keyword = input.getKeyword();//入力された名前を取得
 
@@ -59,6 +60,10 @@ public class SearchService {
 		} else {
 			mav.addObject("msg", searchList.size() + Message.SEARCH_HIT_COUNT);
 		}*/
+	}
+
+	public void delete(ModelAndView mav, @RequestParam(value="id", required = true) int id) {
+		phoneBookRepository.delete(id);
 	}
 
 }

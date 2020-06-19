@@ -6,20 +6,22 @@
 <title>電話帳システム</title>
 </head>
 <body>
-    <h1>編集します。</h1>
-    <h2>登録者と電話番号を入力してください。</h2>
-    <form th:action="@{/create}" th:object="${customerForm}" method="post">
-        <table>
-            <tr>
-                <th>登録者</th>
-                <td><input type="text" name="name" th:field="*{name}"></td>
-            </tr>
-            <tr>
-                <th>電話番号</th>
-                <td><input type="text" name="phoneNumber" th:field="*{phoneNumber}"></td>
-            </tr>
-        </table>
-        <input type="submit" value="編集完了">
-    </form>
+	<h1>編集します。</h1>
+	<h2>登録者と電話番号を入力してください。</h2>
+
+	<form action="/update/new" method="post">
+		<table>
+			<tr>
+				<th>登録者</th>
+				<td><input type="text" name="name"></td>
+			</tr>
+			<tr>
+				<th>電話番号</th>
+				<td><input type="text" name="phoneNumber"></td>
+			</tr>
+		</table>
+		<input type="submit" name="update" value="編集"
+			style="position: relative; top: 30px" />
+	</form>
 </body>
 </html>

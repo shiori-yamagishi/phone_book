@@ -1,6 +1,6 @@
 package com.ojtproject.phonebook.form;
 
-public class RegistForm {
+public class UpdateForm {
 	private int id;
 	private String name;
 	private String phoneNumber;

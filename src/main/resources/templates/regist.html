@@ -9,17 +9,15 @@
 	<h1>新規登録します。</h1>
 	<h2>登録者と電話番号を入力してください。</h2>
 
-	<form action="/regist/new" th:action="@{/regist/new}"
-		th:object="${message}" method="post">
+	<form action="/regist/new" method="post">
 		<table>
 			<tr>
 				<th>登録者</th>
-				<td><input type="text" name="name" th:field="*{name}"></td>
+				<td><input type="text" name="name"></td>
 			</tr>
 			<tr>
 				<th>電話番号</th>
-				<td><input type="text" name="phoneNumber"
-					th:field="*{phoneNumber}"></td>
+				<td><input type="text" name="phoneNumber"></td>
 			</tr>
 		</table>
 		<input type="submit" name="regist" value="電話帳に追加"
