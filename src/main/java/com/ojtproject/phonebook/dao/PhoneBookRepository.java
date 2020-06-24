@@ -15,7 +15,7 @@ import com.ojtproject.phonebook.entity.PhoneBook;
 public interface PhoneBookRepository extends JpaRepository<PhoneBook, Long> {
 
 	//**検索SQL*/
-	@Query(value = "SELECT p.id, p.name, p.phone_number FROM phone_book p", nativeQuery = true)
+	@Query(value = "SELECT p.id, p.name, p.phone_number FROM phone_book p order by p.id", nativeQuery = true)
 	public List<PhoneBook> findAll();
 
 	//**条件一致検索SQL*/

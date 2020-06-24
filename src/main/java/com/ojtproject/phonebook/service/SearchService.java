@@ -14,6 +14,7 @@ import com.ojtproject.phonebook.dao.PhoneBookRepository;
 import com.ojtproject.phonebook.entity.PhoneBook;
 import com.ojtproject.phonebook.form.SearchForm;
 import com.ojtproject.phonebook.form.SearchResultForm;
+import com.ojtproject.phonebook.utility.Validation;
 
 @Service
 public class SearchService {
@@ -34,8 +35,13 @@ public class SearchService {
 		} else if (keyword.equals("")) {
 			phoneBookList = phoneBookRepository.findAll();
 		} else if (!keyword.equals("")) {
-			phoneBookList = phoneBookRepository.findResult(keyword);
+			if (!Validation.validateNameSearch(keyword, mav)) {
+				return;
+			} else {
+				phoneBookList = phoneBookRepository.findResult(keyword);
+			}
 		}
+
 		session.setAttribute("phoneBookList", phoneBookList);
 
 		for (int i = 0; i < phoneBookList.size(); i++) {
@@ -49,21 +55,16 @@ public class SearchService {
 		}
 		mav.addObject("searchList", searchList);
 		mav.setViewName("search");
-		SearchService.searchMsg(searchList, keyword, mav);
+		//SearchService.searchMsg(searchList, keyword, mav);
 	}
 
-	private static void searchMsg(List<SearchResultForm> searchList, String inputName, ModelAndView mav) {
-		/*if (inputName == null) {return;}
-		if (inputName.equals("")) {
-			mav.addObject("msg", Message.SEARCH_EMPTY);
-		} else if (searchList.size() == 0) {
-			mav.addObject("msg", Message.SEARCH_NOT_HIT);
-		} else {
-			mav.addObject("msg", searchList.size() + Message.SEARCH_HIT_COUNT);
-		}*/
-	}
+	/*public void validation() {
+		String name = null;
+		ModelAndView mav = null;
+		Check.validateNameSearch(name, mav);
+	}*/
 
-	public void delete(ModelAndView mav, @RequestParam(value="id", required = true) int id) {
+	public void delete(ModelAndView mav, @RequestParam(value = "id", required = true) int id) {
 		phoneBookRepository.delete(id);
 	}
 

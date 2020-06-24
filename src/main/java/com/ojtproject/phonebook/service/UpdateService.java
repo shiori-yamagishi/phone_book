@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ojtproject.phonebook.dao.PhoneBookRepository;
 import com.ojtproject.phonebook.form.UpdateForm;
+import com.ojtproject.phonebook.utility.Validation;
 
 @Service
 public class UpdateService {
@@ -33,7 +34,19 @@ public class UpdateService {
 		String name = input.getName();
 		String phoneNumber = input.getPhoneNumber();
 
+		if (!Validation.validateName(name, mav) || !Validation.validatePhoneNumber(phoneNumber, mav)) {
+			return;
+		}
 		phoneBookRepository.update(name, phoneNumber, id);
 	}
+
+	/*public void validation() {
+		String inputedName = null;
+		ModelAndView mav = null;
+		Check.validateName(inputedName, mav);
+		String inputedphoneNumber = null;
+		Check.validatephoneNumber(inputedphoneNumber, mav);
+
+	}*/
 
 }

@@ -12,7 +12,9 @@
 		<input type="submit" value="追加" />
 	</form>
 
-	<span class="msg" th:text="${msg}"></span>
+	<span class="messageSearch" th:text="${messageSearch}"></span>
+	<span class="messageA" th:text="${messageA}"></span>
+	<span class="messageB" th:text="${messageB}"></span>
 	<form action="/search" th:action="@{/search}" th:object="${message}"
 		method="post">
 		<span>名前：</span> <input type="text" name="keyword"
@@ -48,10 +50,23 @@
 					<input type="hidden" name="name" th:value="${phoneBook.name}">
 					<input type="hidden" name="phoneNumber"
 						th:value="${phoneBook.phoneNumber}"> <input type="submit"
-						value="削除" />
+						value="削除" onclick="return confirm('この登録者と電話番号を削除しますか？');" />
 				</form>
 			</td>
 		</tr>
 	</table>
+	<script type="text/javascript">
+		function submitbtn() {
+			// 「OK」ボタン押下時
+			if (confirm('この登録者と電話番号を削除しますか？')) {
+				alert('OK');
+				//window.alert('正常に削除されました')
+			}
+			// 「キャンセル」ボタン押下時
+			else {
+				alert('キャンセル');
+			}
+		}
+	</script>
 </body>
 </html>
