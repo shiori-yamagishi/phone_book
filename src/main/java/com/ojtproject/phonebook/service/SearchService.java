@@ -35,7 +35,7 @@ public class SearchService {
 		} else if (keyword.equals("")) {
 			phoneBookList = phoneBookRepository.findAll();
 		} else if (!keyword.equals("")) {
-			if (!Validation.validateNameSearch(keyword, mav)) {
+			if (!Validation.validateNameSearch(keyword, mav)) {    //入力チェック処理
 				return;
 			} else {
 				phoneBookList = phoneBookRepository.findResult(keyword);
@@ -43,6 +43,30 @@ public class SearchService {
 		}
 
 		session.setAttribute("phoneBookList", phoneBookList);
+
+		int recordCount = 0;
+		int pageNum = 0;
+
+		if (phoneBookList != null && !phoneBookList.isEmpty()) {
+			for (int j = 0; j < 15; j++) {
+				if (phoneBookList.size() < 15) {
+					break;
+				}
+				recordCount++;
+				PhoneBook entity = phoneBookList.get(j);
+				SearchResultForm sf = new SearchResultForm();
+				sf.setId(entity.getId());
+				sf.setName(entity.getName());
+				sf.setPhoneNumber(entity.getPhoneNumber());
+				searchList.add(sf);
+			}
+		}
+
+		mav.addObject("searshList", searchList);
+		pageNum++;
+		mav.addObject("pageNum", pageNum);
+		mav.setViewName("search");
+
 
 		for (int i = 0; i < phoneBookList.size(); i++) {
 			PhoneBook entity = phoneBookList.get(i);
@@ -58,12 +82,21 @@ public class SearchService {
 		//SearchService.searchMsg(searchList, keyword, mav);
 	}
 
-	/*public void validation() {
-		String name = null;
-		ModelAndView mav = null;
-		Check.validateNameSearch(name, mav);
-	}*/
 
+	//次ページへ遷移する処理
+	public void toNextPage() {
+
+	}
+
+
+	//前ページへ遷移する処理
+	public void toPreviousPage() {
+
+	}
+
+
+
+	//削除処理
 	public void delete(ModelAndView mav, @RequestParam(value = "id", required = true) int id) {
 		phoneBookRepository.delete(id);
 	}

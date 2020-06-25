@@ -19,6 +19,7 @@ public class UpdateService {
 	@Autowired
 	private PhoneBookRepository phoneBookRepository;
 
+	//編集画面初期表示
 	public void updateInit(ModelAndView mav, @RequestParam(value = "id", required = true) int id,
 			@RequestParam(value = "name", required = true) String name,
 			@RequestParam(value = "phoneNumber", required = true) String phoneNumber) {
@@ -29,6 +30,7 @@ public class UpdateService {
 		mav.setViewName("update");
 	}
 
+	//編集処理、入力チェック処理
 	public void update(UpdateForm input, ModelAndView mav,
 			@RequestParam(value = "id", required = true) int id) {
 		String name = input.getName();
@@ -39,14 +41,5 @@ public class UpdateService {
 		}
 		phoneBookRepository.update(name, phoneNumber, id);
 	}
-
-	/*public void validation() {
-		String inputedName = null;
-		ModelAndView mav = null;
-		Check.validateName(inputedName, mav);
-		String inputedphoneNumber = null;
-		Check.validatephoneNumber(inputedphoneNumber, mav);
-
-	}*/
 
 }

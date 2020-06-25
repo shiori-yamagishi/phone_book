@@ -1,5 +1,8 @@
 package com.ojtproject.phonebook;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,27 +16,23 @@ class PhoneBookApplicationTests {
 	void contextLoads() {
 	}
 
-	/*@BeforeEach
+	/*private SearchResultForm form;
+	@BeforeEach
 	public void beforeEach() {
-
+		form = new SearchResultForm();
+		form.setName("aaa");
 	}*/
+
 	@Test
-	public void validateNameSearchTest() {
-		Validation v = new Validation();
-		boolean result = true;
-		String name = "aaa";
-		ModelAndView mav;
-		//boolean test = v.validateNameSearch(name, mav);
-		//assertEquals(false, test);
+	public void testValidateNameSearch() {
+		ModelAndView mav = new ModelAndView();
+		assertThat(Validation.validateNameSearch("", mav), is(false));
+		assertThat(Validation.validateNameSearch("あああああいいいいいうううううえええええおおおおお", mav), is(true));
+		assertThat(Validation.validateNameSearch("あああああいいいいいうううううえええええおおおおおか", mav), is(false));
+		assertThat(Validation.validateNameSearch("12345678901234567890", mav), is(false));
+		assertThat(Validation.validateNameSearch("123456789012345678901", mav), is(false));
 
 	}
-
-	private void assertEquals(boolean b, boolean test) {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
-
-
 
 	@Test
 	public void validateNameTest() {

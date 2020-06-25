@@ -17,8 +17,8 @@
 	<span class="messageB" th:text="${messageB}"></span>
 	<form action="/search" th:action="@{/search}" th:object="${message}"
 		method="post">
-		<span>名前：</span> <input type="text" name="keyword"
-			th:value="${keyword}" /> <input type="submit" value="検索" />
+		<input type="text" name="keyword" th:value="${keyword}" maxlength="20" />
+		<input type="submit" value="検索" />
 	</form>
 
 	<table id="table" border="1" style="border-collapse: collapse">

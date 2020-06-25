@@ -8,20 +8,23 @@
 <body>
 	<h1>新規登録します。</h1>
 	<h2>登録者と電話番号を入力してください。</h2>
-
+	<form method="post" action="/search">
+		<input type="submit" value="戻る" />
+	</form>
 	<form action="/registnew" method="post">
 		<table>
 			<tr>
 				<th>登録者</th>
-				<td><input type="text" name="name"></td>
+				<td><input type="text" name="name" th:value="${name}" maxlength="20"></td>
 			</tr>
 			<tr>
 				<th>電話番号</th>
-				<td><input type="text" name="phoneNumber"></td>
+				<td><input type="text" name="phoneNumber" th:value="${phoneNumber}"></td>
 			</tr>
 		</table>
 		<input type="submit" name="regist" value="電話帳に追加"
 			style="position: relative; top: 30px" />
 	</form>
+
 </body>
 </html>

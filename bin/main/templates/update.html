@@ -8,12 +8,15 @@
 <body>
 	<h1>編集します。</h1>
 	<h2>登録者と電話番号を入力してください。</h2>
-
+	<form method="post" action="/search">
+		<input type="submit" value="戻る" />
+	</form>
 	<form action="/updatenew" method="post">
 		<table>
 			<tr>
 				<th>登録者</th>
-				<td><input type="text" name="name" th:value="${name}"></td>
+				<td><input type="text" name="name" th:value="${name}"
+					maxlength="20"></td>
 			</tr>
 			<tr>
 				<th>電話番号</th>
@@ -25,5 +28,6 @@
 			style="position: relative; top: 30px" /> <input type="hidden"
 			name="id" th:value="${id}">
 	</form>
+
 </body>
 </html>

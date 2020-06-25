@@ -16,10 +16,12 @@ public class RegistService {
 	@Autowired
 	private PhoneBookRepository phoneBookRepository;
 
+	//追加画面初期表示
 	public void registInit(ModelAndView mav) {
 		mav.setViewName("regist");
 	}
 
+	//追加処理、入力チェック処理
 	public void regist(RegistForm input, ModelAndView mav) {
 		String name = input.getName();
 		String phoneNumber = input.getPhoneNumber();
@@ -28,14 +30,5 @@ public class RegistService {
 		}
 		phoneBookRepository.regist(name, phoneNumber);
 	}
-
-	/*public void validation() {
-		String inputedName = null;
-		ModelAndView mav = null;
-		Check.validateName(inputedName, mav);
-		String inputedphoneNumber = null;
-		Check.validatephoneNumber(inputedphoneNumber, mav);
-
-	}*/
 
 }

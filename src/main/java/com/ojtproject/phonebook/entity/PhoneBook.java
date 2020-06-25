@@ -17,11 +17,13 @@ public class PhoneBook {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private int id;
+
 	/**
 	 * 名前
 	 */
 	@Column(name = "name")
 	private String name;
+
 	/**
 	 * 電話番号
 	 */

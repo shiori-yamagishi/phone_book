@@ -66,7 +66,7 @@ public class PhoneBookController {
 		return mav;
 	}
 
-	//編集処理を行う*/
+	//**編集処理を行う*/
 	@RequestMapping(value = "/updatenew", method = RequestMethod.POST)
 	public ModelAndView update(UpdateForm input, ModelAndView mav,
 			@RequestParam(value = "id", required = true) int id) {
