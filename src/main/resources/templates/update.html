@@ -8,6 +8,10 @@
 <body>
 	<h1>編集します。</h1>
 	<h2>登録者と電話番号を入力してください。</h2>
+	<span class="updateMsg" th:text="${updateMsg}"></span>
+	<span class="messageNameCheck" th:text="${messageNameCheck}"></span>
+	<span class="messagePhoneNumberCheck"
+		th:text="${messagePhoneNumberCheck}"></span>
 	<form method="post" action="/search">
 		<input type="submit" value="戻る" />
 	</form>
@@ -15,8 +19,7 @@
 		<table>
 			<tr>
 				<th>登録者</th>
-				<td><input type="text" name="name" th:value="${name}"
-					maxlength="20"></td>
+				<td><input type="text" name="name" th:value="${name}"></td>
 			</tr>
 			<tr>
 				<th>電話番号</th>
@@ -24,10 +27,16 @@
 					th:value="${phoneNumber}"></td>
 			</tr>
 		</table>
-		<input type="submit" name="update" value="編集完了"
+		<input type="submit" name="update" value="編集完了" onclick="submitbtn()"
 			style="position: relative; top: 30px" /> <input type="hidden"
-			name="id" th:value="${id}">
+			name="id" th:value="${id}" />
 	</form>
-
+	<script>
+	function submitbtn() {
+		if(error) {
+			window.alert('追加に失敗しました');
+		}
+	}
+</script>
 </body>
 </html>

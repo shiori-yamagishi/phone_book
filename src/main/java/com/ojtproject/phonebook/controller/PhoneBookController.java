@@ -36,6 +36,22 @@ public class PhoneBookController {
 		return mav;
 	}
 
+	/**次ページに遷移*/
+	/*@RequestMapping(value = "/searchNextPage", method = RequestMethod.POST)
+	public ModelAndView next(@RequestParam(value = "pageNum", required = true) int pageNum, SearchForm input, ModelAndView mav) {
+		search.toNextPage(pageNum, mav);
+		return mav;
+
+	}
+
+	*//**前ページに遷移*//*
+					@RequestMapping(value = "/searchPreviousPage", method = RequestMethod.POST)
+					public ModelAndView back(@RequestParam(value = "pageNum", required = true) int pageNum, SearchForm input, ModelAndView mav) {
+					search.toPreviousPage(pageNum, mav);
+					return mav;
+
+					}*/
+
 	//**削除処理を行う*/
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ModelAndView delete(ModelAndView mav, @RequestParam(value = "id", required = true) int id) {
@@ -54,7 +70,7 @@ public class PhoneBookController {
 	@RequestMapping(value = "/registnew", method = RequestMethod.POST)
 	public ModelAndView regist(RegistForm input, ModelAndView mav) {
 		regist.regist(input, mav);
-		return searchInit(mav);
+		return registInit(mav);
 	}
 
 	//**編集画面を表示*/
@@ -71,7 +87,8 @@ public class PhoneBookController {
 	public ModelAndView update(UpdateForm input, ModelAndView mav,
 			@RequestParam(value = "id", required = true) int id) {
 		update.update(input, mav, id);
-		return searchInit(mav);
+		mav.setViewName("update");
+		return mav;
 	}
 
 }

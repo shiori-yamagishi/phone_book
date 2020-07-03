@@ -19,6 +19,8 @@ public class UpdateService {
 	@Autowired
 	private PhoneBookRepository phoneBookRepository;
 
+	static final String UPDATE_MESSAGE = "編集しました";
+
 	//編集画面初期表示
 	public void updateInit(ModelAndView mav, @RequestParam(value = "id", required = true) int id,
 			@RequestParam(value = "name", required = true) String name,
@@ -36,10 +38,15 @@ public class UpdateService {
 		String name = input.getName();
 		String phoneNumber = input.getPhoneNumber();
 
+		if (!Validation.blank(name, phoneNumber, mav)) {
+			return;
+		}
+
 		if (!Validation.validateName(name, mav) || !Validation.validatePhoneNumber(phoneNumber, mav)) {
 			return;
 		}
 		phoneBookRepository.update(name, phoneNumber, id);
+		mav.addObject("updateMsg", UPDATE_MESSAGE);
 	}
 
 }

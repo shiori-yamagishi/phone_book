@@ -8,6 +8,10 @@
 <body>
 	<h1>新規登録します。</h1>
 	<h2>登録者と電話番号を入力してください。</h2>
+	<span class="registMsg" th:text="${registMsg}"></span>
+	<span class="messageNameCheck" th:text="${messageNameCheck}"></span>
+	<span class="messagePhoneNumberCheck"
+		th:text="${messagePhoneNumberCheck}"></span>
 	<form method="post" action="/search">
 		<input type="submit" value="戻る" />
 	</form>
@@ -15,16 +19,24 @@
 		<table>
 			<tr>
 				<th>登録者</th>
-				<td><input type="text" name="name" th:value="${name}" maxlength="20"></td>
+				<td><input type="text" name="name" th:value="${name}"></td>
 			</tr>
 			<tr>
 				<th>電話番号</th>
-				<td><input type="text" name="phoneNumber" th:value="${phoneNumber}"></td>
+				<td><input type="text" name="phoneNumber"
+					th:value="${phoneNumber}"></td>
 			</tr>
 		</table>
 		<input type="submit" name="regist" value="電話帳に追加"
-			style="position: relative; top: 30px" />
+			onclick="submitbtn()" style="position: relative; top: 30px" />
 	</form>
+	<script>
+	function submitbtn() {
+		if(error) {
+			window.alert('追加に失敗しました');
+		}
+	}
+	</script>
 
 </body>
 </html>

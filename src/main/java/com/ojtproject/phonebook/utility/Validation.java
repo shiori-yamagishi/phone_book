@@ -18,11 +18,11 @@ public class Validation {
 
 	public static final String NAME_FULL_WIDTH = "登録者名は全角文字で入力してください";
 
-	//public static final String NAME_MAX_MSG = "登録者名は20文字以内で入力してください";
+	public static final String NAME_MAX_MSG = "登録者名は20文字以内で入力してください";
 
-	public static final String PHONE_NUMBER_HALF_WIDTH = "電話番号は半角文字で入力してください";
+	public static final String PHONE_NUMBER_HALF_WIDTH = "電話番号は半角数字で入力してください";
 
-	public static final String PHONE_NUMBER_MSG = "電話番号は10桁か11桁で入力してください";
+	public static final String PHONE_NUMBER_MSG = "電話番号の入力可能桁数は10桁か11桁です";
 
 	public static final int NAME_MAX_LIMIT = 20;
 
@@ -30,53 +30,97 @@ public class Validation {
 
 	public static final int PHONE_NUMBER_MAX_LIMIT = 11;
 
+	/*トップページの検索入力欄の入力チェック*/
 	public static boolean validateNameSearch(String name, ModelAndView mav) {
-		boolean result = true;
-		if (!FullWidth(name)) {
-			result = false;
+		boolean isCorrectNameSearch = true;
+
+		if (!fullWidth(name)) {
+			isCorrectNameSearch = false;
 			mav.addObject("messageSearch", NAME_FULL_WIDTH);
+
+		} else if (isNumber(name)) {
+			isCorrectNameSearch = false;
+			mav.addObject("messageSearch", NAME_FULL_WIDTH);
+
+		} else if (name.length() > NAME_MAX_LIMIT) {
+			isCorrectNameSearch = false;
+			mav.addObject("messageSearch", NAME_MAX_MSG);
 		}
-		return result;
+
+		return isCorrectNameSearch;
 	}
 
-	public static boolean validateName(String inputedName, ModelAndView mav) {
-		boolean result = true;
+	/*空欄チェック*/
+	public static boolean blank(String inputedName, String inputedPhoneNumber, ModelAndView mav) {
+		boolean isBlank = true;
+
 		if (StringUtils.isEmpty(inputedName)) {
-			result = false;
-			mav.addObject("messageA", BLANK);
-		} else if (!FullWidth(inputedName)) {
-			result = false;
-			mav.addObject("messageA", NAME_FULL_WIDTH);
+			if ("".equals(inputedPhoneNumber)) {
+				isBlank = false;
+				mav.addObject("messageA", BLANK);
+			}
+		}
+		return isBlank;
+	}
+
+	/*追加画面、編集画面の登録者名入力チェック*/
+	public static boolean validateName(String inputedName, ModelAndView mav) {
+		boolean isCorrectInputedName = true;
+
+		if (StringUtils.isEmpty(inputedName)) {
+			isCorrectInputedName = false;
+			mav.addObject("messageNameCheck", BLANK);
+
+		} else if (!fullWidth(inputedName)) {
+			isCorrectInputedName = false;
+			mav.addObject("messageNameCheck", NAME_FULL_WIDTH);
+
+		} else if (isNumber(inputedName)) {
+			isCorrectInputedName = false;
+			mav.addObject("messageNameCheck", NAME_FULL_WIDTH);
+
+		} else if (inputedName.length() > NAME_MAX_LIMIT) {
+			isCorrectInputedName = false;
+			mav.addObject("messageNameCheck", NAME_MAX_MSG);
 		}
 
-		return result;
+		return isCorrectInputedName;
 	}
 
-	private static boolean FullWidth(String inputedName) {
-		return Pattern.matches("^[^!-~｡-ﾟ]*$", inputedName);
+	private static boolean isNumber(String inputedName) {
+		return Pattern.matches("^[０-９]*$", inputedName);
 	}
 
+	public static boolean fullWidth(String inputedName) {
+		return Pattern.matches("^[^ -~｡-ﾟ]+$", inputedName);
+	}
+
+	/*追加画面、編集画面の電話番号入力チェック*/
 	public static boolean validatePhoneNumber(String inputedPhoneNumber, ModelAndView mav) {
-		boolean result = true;
+		boolean isCorrectInputedPhoneNumber = true;
+
 		if ("".equals(inputedPhoneNumber)) {
-			result = false;
-			mav.addObject("messageB", BLANK);
-		} else if (!HalfWidth(inputedPhoneNumber)) {
-			result = false;
-			mav.addObject("messageB", PHONE_NUMBER_HALF_WIDTH);
+			isCorrectInputedPhoneNumber = false;
+			mav.addObject("messagePhoneNumberCheck", BLANK);
+
+		} else if (!halfWidth(inputedPhoneNumber)) {
+			isCorrectInputedPhoneNumber = false;
+			mav.addObject("messagePhoneNUmberCheck", PHONE_NUMBER_HALF_WIDTH);
+
 		} else if (inputedPhoneNumber.length() < PHONE_NUMBER_MIN_LIMIT) {
-			result = false;
-			mav.addObject("messageB", PHONE_NUMBER_MSG);
+			isCorrectInputedPhoneNumber = false;
+			mav.addObject("messagePhoneNumberCheck", PHONE_NUMBER_MSG);
+
 		} else if (inputedPhoneNumber.length() > PHONE_NUMBER_MAX_LIMIT) {
-			result = false;
-			mav.addObject("messageB", PHONE_NUMBER_MSG);
+			isCorrectInputedPhoneNumber = false;
+			mav.addObject("messagePhoneNumberCheck", PHONE_NUMBER_MSG);
 		}
 
-		return result;
+		return isCorrectInputedPhoneNumber;
 
 	}
 
-	private static boolean HalfWidth(String phoneNumber) {
+	public static boolean halfWidth(String phoneNumber) {
 		return Pattern.matches("^[0-9]*$", phoneNumber);
 	}
 
