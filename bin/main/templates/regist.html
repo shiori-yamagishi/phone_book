@@ -32,8 +32,10 @@
 	</form>
 	<script>
 	function submitbtn() {
-		if(error) {
-			window.alert('追加に失敗しました');
+		try {
+
+		} catch(error) {
+			window.alert("追加に失敗しました");
 		}
 	}
 	</script>
