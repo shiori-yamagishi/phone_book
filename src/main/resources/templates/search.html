@@ -11,8 +11,11 @@
 	<form action="/regist" th:action="@{/regist}" method="get">
 		<input type="submit" value="追加" />
 	</form>
+	<span class="deleteError" th:text="${deleteError}"></span>
 	<span class="deleteMsg" th:text="${deleteMsg}"></span>
 	<span class="messageSearch" th:text="${messageSearch}"></span>
+	<span class="registMsg" th:text="${registMsg}"></span>
+	<span class="updateMsg" th:text="${updateMsg}"></span>
 
 	<form action="/search" th:action="@{/search}" th:object="${message}"
 		method="post">
@@ -30,7 +33,7 @@
 		</tr>
 
 		<tr th:each="phoneBook, stat :${searchList}">
-			<td th:text="${stat.count}"></td>
+			<td th:text="${stat. count}"></td>
 			<td th:text="${phoneBook.name}"></td>
 			<td th:text="${phoneBook.phoneNumber}"></td>
 			<td>
@@ -49,33 +52,35 @@
 					<input type="hidden" name="name" th:value="${phoneBook.name}">
 					<input type="hidden" name="phoneNumber"
 						th:value="${phoneBook.phoneNumber}"> <input type="submit"
-						value="削除" onclick="submitbtn()" />
+						value="削除" onclick="return confirm('この登録者と電話番号を削除しますか？')">
+					<div th:if="${deleteError}">
+						<script type="text/javascript">
+							window.alert("削除に失敗しました");
+						</script>
+					</div>
 				</form>
 			</td>
 		</tr>
 	</table>
 
-	<!-- <table id="table" border="1" style="border-collapse: collapse">
-		<tr>
-			<td>
-				<form method="post" action="/searchPreviousPage">
-					<input type="hidden" name="pageNum" th:value="${pageNum}">
-					<input type="submit" value="前ページ">
-				</form>
-			</td>
-			<td>
-				<form method="post" action="/searchNextPage">
-					<input type="hidden" name="pageNum" th:value="${pageNum}">
-					<input type="submit" value="次ページ">
-				</form>
-			</td>
-		</tr>
+	<div th:if="${pageNum != 0}">
+		<table id="table" border="1" style="border-collapse: collapse">
+			<tr>
+				<td th:if="${pageNum!= 1}">
+					<form method="post" action="/searchPreviousPage">
+						<input type="hidden" name="pageNum" th:value="${pageNum}">
+						<input type="submit" value="前ページ">
+					</form>
+				</td>
+				<td th:if="${!isNoPage}">
+					<form method="post" action="/searchNextPage">
+						<input type="hidden" name="pageNum" th:value="${pageNum}">
+						<input type="submit" value="次ページ">
+					</form>
+				</td>
+			</tr>
 
-	</table> -->
-	<script>
-		function submitbtn() {
-
-		}
-	</script>
+		</table>
+	</div>
 </body>
 </html>

@@ -37,43 +37,56 @@ public class PhoneBookController {
 	}
 
 	/**次ページに遷移*/
-	/*@RequestMapping(value = "/searchNextPage", method = RequestMethod.POST)
-	public ModelAndView next(@RequestParam(value = "pageNum", required = true) int pageNum, SearchForm input, ModelAndView mav) {
+	@RequestMapping(value = "/searchNextPage", method = RequestMethod.POST)
+	public ModelAndView next(@RequestParam(value = "pageNum", required = true) int pageNum, SearchForm input,
+			ModelAndView mav) {
 		search.toNextPage(pageNum, mav);
 		return mav;
 
 	}
 
-	*//**前ページに遷移*//*
-					@RequestMapping(value = "/searchPreviousPage", method = RequestMethod.POST)
-					public ModelAndView back(@RequestParam(value = "pageNum", required = true) int pageNum, SearchForm input, ModelAndView mav) {
-					search.toPreviousPage(pageNum, mav);
-					return mav;
+	/**前ページに遷移*/
+	@RequestMapping(value = "/searchPreviousPage", method = RequestMethod.POST)
+	public ModelAndView previous(@RequestParam(value = "pageNum", required = true) int pageNum, SearchForm input,
+			ModelAndView mav) {
+		search.toPreviousPage(pageNum, mav);
+		return mav;
 
-					}*/
+	}
 
-	//**削除処理を行う*/
+	/**削除処理を行う*/
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ModelAndView delete(ModelAndView mav, @RequestParam(value = "id", required = true) int id) {
-		search.delete(mav, id);
+
+		try {
+			search.delete(mav, id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return searchInit(mav);
 	}
 
-	//**追加画面を表示*/
+	/**追加画面を表示*/
 	@RequestMapping(value = "/regist", method = RequestMethod.GET)
 	public ModelAndView registInit(ModelAndView mav) {
 		regist.registInit(mav);
 		return mav;
 	}
 
-	//**追加処理を行う*/
+	/**追加処理を行う*/
 	@RequestMapping(value = "/registnew", method = RequestMethod.POST)
 	public ModelAndView regist(RegistForm input, ModelAndView mav) {
-		regist.regist(input, mav);
-		return registInit(mav);
+
+		boolean notHasErrors = regist.regist(input, mav);
+		if (!notHasErrors) {
+			return registInit(mav);
+		}
+
+		return searchInit(mav);
 	}
 
-	//**編集画面を表示*/
+	/**編集画面を表示*/
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ModelAndView updateInit(ModelAndView mav, @RequestParam(value = "id", required = true) int id,
 			@RequestParam(value = "name", required = true) String name,
@@ -82,13 +95,19 @@ public class PhoneBookController {
 		return mav;
 	}
 
-	//**編集処理を行う*/
+	/**編集処理を行う*/
 	@RequestMapping(value = "/updatenew", method = RequestMethod.POST)
 	public ModelAndView update(UpdateForm input, ModelAndView mav,
 			@RequestParam(value = "id", required = true) int id) {
-		update.update(input, mav, id);
+
+		boolean notHasErrors = update.update(input, mav, id);
+		if (!notHasErrors) {
+			mav.setViewName("update");
+			return mav;
+		}
+
 		mav.setViewName("update");
-		return mav;
+		return searchInit(mav);
 	}
 
 }

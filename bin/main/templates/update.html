@@ -8,7 +8,7 @@
 <body>
 	<h1>編集します。</h1>
 	<h2>登録者と電話番号を入力してください。</h2>
-	<span class="updateMsg" th:text="${updateMsg}"></span>
+	<span class="messageBlank" th:text="${messageBlank}"></span>
 	<span class="messageNameCheck" th:text="${messageNameCheck}"></span>
 	<span class="messagePhoneNumberCheck"
 		th:text="${messagePhoneNumberCheck}"></span>
@@ -27,14 +27,14 @@
 					th:value="${phoneNumber}"></td>
 			</tr>
 		</table>
-		<input type="submit" name="update" value="編集完了" onclick="submitbtn()"
-			style="position: relative; top: 30px" /> <input type="hidden"
-			name="id" th:value="${id}" />
+		<input type="submit" name="update" value="編集完了"
+		style="position: relative; top: 30px" />
+		<input type="hidden" name="id" th:value="${id}" />
 	</form>
-	<script>
-	function submitbtn() {
-
-	}
-</script>
+	<div th:if="${updateError}">
+		<script type="text/javascript">
+			window.alert("編集に失敗しました");
+		</script>
+	</div>
 </body>
 </html>

@@ -57,7 +57,7 @@ public class Validation {
 		if (StringUtils.isEmpty(inputedName)) {
 			if ("".equals(inputedPhoneNumber)) {
 				isBlank = false;
-				mav.addObject("messageA", BLANK);
+				mav.addObject("messageBlank", BLANK);
 			}
 		}
 		return isBlank;
@@ -105,7 +105,7 @@ public class Validation {
 
 		} else if (!halfWidth(inputedPhoneNumber)) {
 			isCorrectInputedPhoneNumber = false;
-			mav.addObject("messagePhoneNUmberCheck", PHONE_NUMBER_HALF_WIDTH);
+			mav.addObject("messagePhoneNumberCheck", PHONE_NUMBER_HALF_WIDTH);
 
 		} else if (inputedPhoneNumber.length() < PHONE_NUMBER_MIN_LIMIT) {
 			isCorrectInputedPhoneNumber = false;

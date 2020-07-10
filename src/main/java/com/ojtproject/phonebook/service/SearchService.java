@@ -36,11 +36,13 @@ public class SearchService {
 		List<SearchResultForm> searchList = new ArrayList<>();
 		if (keyword == null) {
 			phoneBookList = phoneBookRepository.findAll();
+			//session.setAttribute("all", phoneBookList);
 		} else if ("".equals(keyword)) {
 			phoneBookList = phoneBookRepository.findAll();
 		} else {
 			if (!Validation.validateNameSearch(keyword, mav)) { //入力チェック処理
-				return;
+				phoneBookList = phoneBookRepository.findAll();
+				//return;
 			} else {
 				phoneBookList = phoneBookRepository.findResult(keyword);
 			}
@@ -48,7 +50,7 @@ public class SearchService {
 
 		session.setAttribute("phoneBookList", phoneBookList);
 
-		for (int i = 0; i < phoneBookList.size(); i++) {
+		/*for (int i = 0; i < phoneBookList.size(); i++) {
 			PhoneBook entity = phoneBookList.get(i);
 			SearchResultForm sf = new SearchResultForm();
 			sf.setId(entity.getId());
@@ -57,90 +59,127 @@ public class SearchService {
 			searchList.add(sf);
 		}
 		mav.addObject("searchList", searchList);
+		mav.setViewName("search");*/
+
+		int pageNum = 0;
+
+		if (phoneBookList != null && !phoneBookList.isEmpty()) {
+			for (int j = 0; j < 15; j++) {
+				if (phoneBookList.size() == j) {
+					break;
+				}
+				recordCount++;
+				PhoneBook entity = phoneBookList.get(j);
+				SearchResultForm sf = new SearchResultForm();
+				sf.setResultId(recordCount);
+				sf.setId(entity.getId());
+				sf.setName(entity.getName());
+				sf.setPhoneNumber(entity.getPhoneNumber());
+				searchList.add(sf);
+			}
+		}
+
+		mav.addObject("searchList", searchList);
+
+		if (!phoneBookList.isEmpty()) {
+			pageNum++;
+		}
+
+		if (phoneBookList.size() <= 15) {
+			mav.addObject("isNoPage", true);
+		} else {
+			mav.addObject("isNoPage", false);
+		}
+
+		//pageNum++;
+		mav.addObject("pageNum", pageNum);
+		session.setAttribute("listPage" + pageNum, searchList);
 		mav.setViewName("search");
-	}
-
-	/*int pageNum = 0;
-
-	if (phoneBookList != null && !phoneBookList.isEmpty()) {
-		for (int j = 0; j < 15; j++) {
-			if (phoneBookList.size() < 15) {
-				break;
-			}
-			recordCount++;
-			PhoneBook entity = phoneBookList.get(j);
-			SearchResultForm sf = new SearchResultForm();
-			sf.setId(entity.getId());
-			sf.setName(entity.getName());
-			sf.setPhoneNumber(entity.getPhoneNumber());
-			searchList.add(sf);
-		}
-	}
-
-	mav.addObject("searshList", searchList);
-	pageNum++;
-	mav.addObject("pageNum", pageNum);
-	session.setAttribute("listPage" + pageNum, searchList);
-	mav.setViewName("search");
 
 	}
 
-	//次ページへ遷移する処理
+	/*次ページへ遷移する処理*/
 	public void toNextPage(int pageNum, ModelAndView mav) {
-	List<PhoneBook> phoneBookList;
-	phoneBookList = (List<PhoneBook>) session.getAttribute("phoneBookList");
-	int firstDataNum = 15 * (pageNum - 1);
-	int count = firstDataNum + 15;
-	int recordCount = pageNum * 15 - 15;
+		List<PhoneBook> phoneBookList;
+		phoneBookList = (List<PhoneBook>) session.getAttribute("phoneBookList");
 
-	if (phoneBookList.size() - (15 * pageNum) > 0 && phoneBookList != null) {
-		pageNum++;
-	}
+		/*if (phoneBookList.size() - (15 * pageNum) > 0 && phoneBookList != null) {
+			pageNum++;
+		}*/
 
-	List<SearchResultForm> searchList = new ArrayList<>();
-
-	if (phoneBookList != null) {
-		for (int j = firstDataNum; j < count; j++) {
-			if (j == phoneBookList.size()) {
-				break;
-			}
-			recordCount++;
-			PhoneBook entity = phoneBookList.get(j);
-			SearchResultForm sf = new SearchResultForm();
-			sf.setId(entity.getId());
-			sf.setName(entity.getName());
-			sf.setPhoneNumber(entity.getPhoneNumber());
-			searchList.add(sf);
+		if (pageNum < 0) {
+			pageNum = 0;
 		}
+		pageNum++;
+
+		int noPage = 0;
+		boolean isNoPage = false;
+
+		if (phoneBookList.size() % 15 == 0) {
+			noPage = phoneBookList.size() / 15;
+		} else {
+			noPage = (phoneBookList.size() / 15) + 1;
+		}
+
+		List<SearchResultForm> searchList = new ArrayList<>();
+		int firstRecordNum = 15 * (pageNum - 1);
+		int count = firstRecordNum + 15;
+		int recordCount = (pageNum * 15) - 15;
+
+		if (phoneBookList != null) {
+			for (int j = firstRecordNum; j < count; j++) {
+				if (j == phoneBookList.size()) {
+					break;
+				}
+				recordCount++;
+				PhoneBook entity = phoneBookList.get(j);
+				SearchResultForm sf = new SearchResultForm();
+				sf.setResultId(recordCount);
+				sf.setId(entity.getId());
+				sf.setName(entity.getName());
+				sf.setPhoneNumber(entity.getPhoneNumber());
+				searchList.add(sf);
+			}
+		}
+
+		mav.addObject("searchList", searchList);
+
+		if (noPage == pageNum) {
+			isNoPage = true;
+		}
+
+		mav.addObject("isNoPage", isNoPage);
+		mav.addObject("pageNum", pageNum);
+		session.setAttribute("listPage" + pageNum, searchList);
+		mav.setViewName("search");
+
 	}
 
-	mav.addObject("searchList", searchList);
-	mav.addObject("pageNum", pageNum);
-	session.setAttribute("listPage" + pageNum, searchList);
-	mav.setViewName("search");
-
-	}
-
-	//前ページへ遷移する処理
+	/*前ページへ遷移する処理*/
 	public void toPreviousPage(int pageNum, ModelAndView mav) {
-	int previousPage = pageNum - 1;
+		int previousPage = pageNum - 1;
 
-	if (previousPage < 1) {
-		previousPage = 1;
+		/*if (previousPage < 1) {
+			previousPage = 1;
+		}*/
+
+		mav.addObject("searchList", (List<SearchResultForm>) session.getAttribute("listPage" + previousPage));
+		//List<PhoneBook> phoneBookList = (List<PhoneBook>) session.getAttribute("phoneBookList");
+		mav.addObject("pageNum", previousPage);
+		mav.addObject("isNoPage", false);
+		mav.setViewName("search");
+
 	}
 
-	mav.addObject("searchList", (List<SearchResultForm>) session.getAttribute("listPage" + previousPage));
-	mav.addObject("pageNum", previousPage);
-	mav.setViewName("search");
+	/*削除処理*/
+	public void delete(ModelAndView mav, @RequestParam(value = "id", required = true) int id) throws Exception {
 
-	}*/
-
-	//削除処理
-
-	public void delete(ModelAndView mav, @RequestParam(value = "id", required = true) int id) {
-
-		phoneBookRepository.delete(id);
-		mav.addObject("deleteMsg", DELETE_MESSAGE);
+		try {
+			phoneBookRepository.delete(id);
+			mav.addObject("deleteMsg", DELETE_MESSAGE);
+		} catch (Exception e) {
+			mav.addObject("deleteError", "削除に失敗しました");
+		}
 
 	}
 

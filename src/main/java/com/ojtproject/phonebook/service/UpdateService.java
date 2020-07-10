@@ -33,20 +33,39 @@ public class UpdateService {
 	}
 
 	//編集処理、入力チェック処理
-	public void update(UpdateForm input, ModelAndView mav,
+	public boolean update(UpdateForm input, ModelAndView mav,
 			@RequestParam(value = "id", required = true) int id) {
 		String name = input.getName();
 		String phoneNumber = input.getPhoneNumber();
+		boolean updateResult = true;
 
 		if (!Validation.blank(name, phoneNumber, mav)) {
-			return;
+			updateResult = false;
+			mav.addObject("id", id);
+			mav.addObject("name", name);
+			mav.addObject("phoneNumber", phoneNumber);
+			return updateResult;
 		}
 
-		if (!Validation.validateName(name, mav) || !Validation.validatePhoneNumber(phoneNumber, mav)) {
-			return;
+		if (!Validation.validateName(name, mav) | !Validation.validatePhoneNumber(phoneNumber, mav)) {
+			updateResult = false;
+			mav.addObject("id", id);
+			mav.addObject("name", name);
+			mav.addObject("phoneNumber", phoneNumber);
+			return updateResult;
 		}
-		phoneBookRepository.update(name, phoneNumber, id);
-		mav.addObject("updateMsg", UPDATE_MESSAGE);
+
+		try {
+			phoneBookRepository.update(name, phoneNumber, id);
+			mav.addObject("updateMsg", UPDATE_MESSAGE);
+		} catch (Exception e) {
+			mav.addObject("updateError", "編集に失敗しました");
+			updateResult = false;
+			return updateResult;
+		}
+
+		return updateResult;
+
 	}
 
 }
