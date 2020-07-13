@@ -31,21 +31,25 @@ public class RegistService {
 		String phoneNumber = input.getPhoneNumber();
 		boolean registResult = true;
 
-		if (!Validation.blank(name, phoneNumber, mav)) {
+		if (!Validation.blank(name, phoneNumber, mav)) {//空欄チェック
 			registResult = false;
+			mav.addObject("name", name);
+			mav.addObject("phoneNumber", phoneNumber);
 			return registResult;
 		}
 
-		if (!Validation.validateName(name, mav) | !Validation.validatePhoneNumber(phoneNumber, mav)) {
+		if (!Validation.validateName(name, mav) | !Validation.validatePhoneNumber(phoneNumber, mav)) {//登録者名と電話番号の入力チェック（002_9)
 			registResult = false;
+			mav.addObject("name", name);
+			mav.addObject("phoneNumber", phoneNumber);
 			return registResult;
 		}
 
 		try {
 			phoneBookRepository.regist(name, phoneNumber);
-			mav.addObject("registMsg", REGIST_MESSAGE);
+			mav.addObject("registMsg", REGIST_MESSAGE);//追加メッセージの表示（002_2)
 		} catch (Exception e) {
-			mav.addObject("registError", "追加に失敗しました");
+			mav.addObject("registError", "追加に失敗しました");//追加失敗メッセージの表示（002_3)
 			registResult = false;
 			return registResult;
 		}

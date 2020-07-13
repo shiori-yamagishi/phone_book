@@ -60,6 +60,7 @@ public class Validation {
 				mav.addObject("messageBlank", BLANK);
 			}
 		}
+
 		return isBlank;
 	}
 
@@ -75,7 +76,7 @@ public class Validation {
 			isCorrectInputedName = false;
 			mav.addObject("messageNameCheck", NAME_FULL_WIDTH);
 
-		} else if (isNumber(inputedName)) {
+		} else if (isNumber(inputedName)) {//全角数字判定(001_8,002_7,003_7)
 			isCorrectInputedName = false;
 			mav.addObject("messageNameCheck", NAME_FULL_WIDTH);
 
@@ -87,7 +88,7 @@ public class Validation {
 		return isCorrectInputedName;
 	}
 
-	private static boolean isNumber(String inputedName) {
+	public static boolean isNumber(String inputedName) {
 		return Pattern.matches("^[０-９]*$", inputedName);
 	}
 

@@ -79,7 +79,8 @@ public class PhoneBookController {
 	public ModelAndView regist(RegistForm input, ModelAndView mav) {
 
 		boolean notHasErrors = regist.regist(input, mav);
-		if (!notHasErrors) {
+
+		if (!notHasErrors) {//入力チェックに引っかかった場合は、追加画面に止まる
 			return registInit(mav);
 		}
 
@@ -101,7 +102,8 @@ public class PhoneBookController {
 			@RequestParam(value = "id", required = true) int id) {
 
 		boolean notHasErrors = update.update(input, mav, id);
-		if (!notHasErrors) {
+
+		if (!notHasErrors) {//入力チェックに引っかかった場合は、編集画面に止まる
 			mav.setViewName("update");
 			return mav;
 		}

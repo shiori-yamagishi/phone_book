@@ -7,5 +7,10 @@
 </head>
 <body>
 	<h1>内部エラーが発生しました。しばらくしてから接続してください。</h1>
+	<div th:if="${deleteError}">
+		<script type="text/javascript">
+			window.alert("削除に失敗しました");
+		</script>
+	</div>
 </body>
 </html>

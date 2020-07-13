@@ -11,7 +11,7 @@
 	<form action="/regist" th:action="@{/regist}" method="get">
 		<input type="submit" value="追加" />
 	</form>
-	<span class="deleteError" th:text="${deleteError}"></span>
+
 	<span class="deleteMsg" th:text="${deleteMsg}"></span>
 	<span class="messageSearch" th:text="${messageSearch}"></span>
 	<span class="registMsg" th:text="${registMsg}"></span>
@@ -79,7 +79,6 @@
 					</form>
 				</td>
 			</tr>
-
 		</table>
 	</div>
 </body>

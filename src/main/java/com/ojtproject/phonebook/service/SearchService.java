@@ -36,12 +36,11 @@ public class SearchService {
 		List<SearchResultForm> searchList = new ArrayList<>();
 		if (keyword == null) {
 			phoneBookList = phoneBookRepository.findAll();
-			//session.setAttribute("all", phoneBookList);
 		} else if ("".equals(keyword)) {
 			phoneBookList = phoneBookRepository.findAll();
 		} else {
 			if (!Validation.validateNameSearch(keyword, mav)) { //入力チェック処理
-				phoneBookList = phoneBookRepository.findAll();
+				phoneBookList = phoneBookRepository.findAll();//入力チェックに引っかかった場合は全件表示させる
 				//return;
 			} else {
 				phoneBookList = phoneBookRepository.findResult(keyword);
@@ -50,17 +49,7 @@ public class SearchService {
 
 		session.setAttribute("phoneBookList", phoneBookList);
 
-		/*for (int i = 0; i < phoneBookList.size(); i++) {
-			PhoneBook entity = phoneBookList.get(i);
-			SearchResultForm sf = new SearchResultForm();
-			sf.setId(entity.getId());
-			sf.setName(entity.getName());
-			sf.setPhoneNumber(entity.getPhoneNumber());
-			searchList.add(sf);
-		}
-		mav.addObject("searchList", searchList);
-		mav.setViewName("search");*/
-
+		/*ページング処理（001_3,001_4)*/
 		int pageNum = 0;
 
 		if (phoneBookList != null && !phoneBookList.isEmpty()) {
@@ -85,7 +74,7 @@ public class SearchService {
 			pageNum++;
 		}
 
-		if (phoneBookList.size() <= 15) {
+		if (phoneBookList.size() <= 15) { //表示するデータがない場合は、ページボタンをそれぞれ非表示にする
 			mav.addObject("isNoPage", true);
 		} else {
 			mav.addObject("isNoPage", false);
@@ -102,10 +91,6 @@ public class SearchService {
 	public void toNextPage(int pageNum, ModelAndView mav) {
 		List<PhoneBook> phoneBookList;
 		phoneBookList = (List<PhoneBook>) session.getAttribute("phoneBookList");
-
-		/*if (phoneBookList.size() - (15 * pageNum) > 0 && phoneBookList != null) {
-			pageNum++;
-		}*/
 
 		if (pageNum < 0) {
 			pageNum = 0;
@@ -160,7 +145,7 @@ public class SearchService {
 		int previousPage = pageNum - 1;
 
 		/*if (previousPage < 1) {
-			previousPage = 1;
+			previousPage = 0;
 		}*/
 
 		mav.addObject("searchList", (List<SearchResultForm>) session.getAttribute("listPage" + previousPage));
@@ -176,9 +161,9 @@ public class SearchService {
 
 		try {
 			phoneBookRepository.delete(id);
-			mav.addObject("deleteMsg", DELETE_MESSAGE);
+			mav.addObject("deleteMsg", DELETE_MESSAGE);//削除確認メッセージ表示(001_11)
 		} catch (Exception e) {
-			mav.addObject("deleteError", "削除に失敗しました");
+			mav.addObject("deleteError", "削除に失敗しました");//削除失敗メッセージ表示(001_12)
 		}
 
 	}

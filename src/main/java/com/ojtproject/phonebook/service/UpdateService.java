@@ -39,7 +39,7 @@ public class UpdateService {
 		String phoneNumber = input.getPhoneNumber();
 		boolean updateResult = true;
 
-		if (!Validation.blank(name, phoneNumber, mav)) {
+		if (!Validation.blank(name, phoneNumber, mav)) {//空欄チェック
 			updateResult = false;
 			mav.addObject("id", id);
 			mav.addObject("name", name);
@@ -47,7 +47,7 @@ public class UpdateService {
 			return updateResult;
 		}
 
-		if (!Validation.validateName(name, mav) | !Validation.validatePhoneNumber(phoneNumber, mav)) {
+		if (!Validation.validateName(name, mav) | !Validation.validatePhoneNumber(phoneNumber, mav)) {//登録者名と電話番号の入力チェック（003_9)
 			updateResult = false;
 			mav.addObject("id", id);
 			mav.addObject("name", name);
@@ -57,9 +57,9 @@ public class UpdateService {
 
 		try {
 			phoneBookRepository.update(name, phoneNumber, id);
-			mav.addObject("updateMsg", UPDATE_MESSAGE);
+			mav.addObject("updateMsg", UPDATE_MESSAGE);//編集メッセージの表示（003_2)
 		} catch (Exception e) {
-			mav.addObject("updateError", "編集に失敗しました");
+			mav.addObject("updateError", "編集に失敗しました");//編集失敗メッセージの表示（003_3)
 			updateResult = false;
 			return updateResult;
 		}
