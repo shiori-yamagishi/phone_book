@@ -5,13 +5,23 @@
 }
 
 body {
-	background-color: #f0f8ff;
+	background-color: #ffffff;
 	margin: 0;
 	text-align: center;
 }
 
 h1 {
-	background-color: #b0c4de;
+	background-color: #ffffff;
+}
+
+.phoneBook {
+	color: #339966;
+	text-align: left;
+}
+
+.data {
+	color: #339966;
+	text-align: left;
 }
 
 #table {
@@ -23,6 +33,38 @@ h1 {
 	margin-top: 20px;
 	margin-right: 10px;
 	text-align: right;
+}
+
+.toRegistButton {
+	background-color: #ff0000;
+}
+
+.searchButton {
+	background-color: #66ccff;
+}
+
+.toUpdateButton {
+	color: #3366ff;
+}
+
+.toDeleteButton {
+	color: #cc9900;
+}
+
+.toPreviousPageButton {
+	color: #0033ff;
+}
+
+.toNextPageButton {
+	color: #0033ff;
+}
+
+.backButton {
+	background-color: #4689ff
+}
+
+.registButton {
+	background-color: #ff0000;
 }
 
 .button {

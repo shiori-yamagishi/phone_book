@@ -3,12 +3,16 @@ package com.ojtproject.phonebook.form;
 public class SearchResultForm {
 
 	private int id;
+
 	/**検索で一致した名前*/
 	private String name;
+
 	/**検索で一致した電話番号*/
 	private String phoneNumber;
 
 	private int resultId;
+
+	private String address;
 
 	public int getId() {
 		return id;
@@ -40,6 +44,14 @@ public class SearchResultForm {
 
 	public void setResultId(int resultId) {
 		this.resultId = resultId;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 }

@@ -24,11 +24,13 @@ public class UpdateService {
 	//編集画面初期表示
 	public void updateInit(ModelAndView mav, @RequestParam(value = "id", required = true) int id,
 			@RequestParam(value = "name", required = true) String name,
-			@RequestParam(value = "phoneNumber", required = true) String phoneNumber) {
+			@RequestParam(value = "phoneNumber", required = true) String phoneNumber,
+			@RequestParam(value = "address", required = true) String address) {
 
 		mav.addObject("id", id);
 		mav.addObject("name", name);
 		mav.addObject("phoneNumber", phoneNumber);
+		mav.addObject("address", address);
 		mav.setViewName("update");
 	}
 
@@ -37,6 +39,7 @@ public class UpdateService {
 			@RequestParam(value = "id", required = true) int id) {
 		String name = input.getName();
 		String phoneNumber = input.getPhoneNumber();
+		String address = input.getAddress();
 		boolean updateResult = true;
 
 		if (!Validation.blank(name, phoneNumber, mav)) {//空欄チェック
@@ -44,6 +47,7 @@ public class UpdateService {
 			mav.addObject("id", id);
 			mav.addObject("name", name);
 			mav.addObject("phoneNumber", phoneNumber);
+			mav.addObject("address", address);
 			return updateResult;
 		}
 
@@ -52,11 +56,12 @@ public class UpdateService {
 			mav.addObject("id", id);
 			mav.addObject("name", name);
 			mav.addObject("phoneNumber", phoneNumber);
+			mav.addObject("address", address);
 			return updateResult;
 		}
 
 		try {
-			phoneBookRepository.update(name, phoneNumber, id);
+			phoneBookRepository.update(name, phoneNumber, id, address);
 			mav.addObject("updateMsg", UPDATE_MESSAGE);//編集メッセージの表示（003_2)
 		} catch (Exception e) {
 			mav.addObject("updateError", "編集に失敗しました");//編集失敗メッセージの表示（003_3)

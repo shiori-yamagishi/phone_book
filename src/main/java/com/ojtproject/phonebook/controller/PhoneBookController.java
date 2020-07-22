@@ -1,5 +1,7 @@
 package com.ojtproject.phonebook.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,7 @@ import com.ojtproject.phonebook.form.UpdateForm;
 import com.ojtproject.phonebook.service.RegistService;
 import com.ojtproject.phonebook.service.SearchService;
 import com.ojtproject.phonebook.service.UpdateService;
+import com.ojtproject.phonebook.utility.Address;
 
 @Controller
 public class PhoneBookController {
@@ -32,6 +35,9 @@ public class PhoneBookController {
 	/**検索ロジックを呼び出して検索ページへ遷移*/
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public ModelAndView search(SearchForm input, ModelAndView mav) {
+		ArrayList<String> prefectures = new ArrayList<>();
+		prefectures = Address.pullDownList();
+		mav.addObject("prefectures", prefectures);
 		search.search(input, mav);
 		return mav;
 	}
@@ -40,6 +46,9 @@ public class PhoneBookController {
 	@RequestMapping(value = "/searchNextPage", method = RequestMethod.POST)
 	public ModelAndView next(@RequestParam(value = "pageNum", required = true) int pageNum, SearchForm input,
 			ModelAndView mav) {
+		/*ArrayList<String> prefectures = new ArrayList<>();
+		prefectures = Address.addressList();
+		mav.addObject("prefectures", prefectures);*/
 		search.toNextPage(pageNum, mav);
 		return mav;
 
@@ -52,6 +61,14 @@ public class PhoneBookController {
 		search.toPreviousPage(pageNum, mav);
 		return mav;
 
+	}
+
+	/*csv出力処理を行う*/
+	@RequestMapping(value = "/csv", method = RequestMethod.POST)
+	public ModelAndView exportCsv(ModelAndView mav) {
+		search.exportCsv(mav);
+
+		return searchInit(mav);
 	}
 
 	/**削除処理を行う*/
@@ -91,8 +108,9 @@ public class PhoneBookController {
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ModelAndView updateInit(ModelAndView mav, @RequestParam(value = "id", required = true) int id,
 			@RequestParam(value = "name", required = true) String name,
-			@RequestParam(value = "phoneNumber", required = true) String phoneNumber) {
-		update.updateInit(mav, id, name, phoneNumber);
+			@RequestParam(value = "phoneNumber", required = true) String phoneNumber,
+			@RequestParam(value = "address", required = true) String address) {
+		update.updateInit(mav, id, name, phoneNumber, address);
 		return mav;
 	}
 
@@ -100,6 +118,10 @@ public class PhoneBookController {
 	@RequestMapping(value = "/updatenew", method = RequestMethod.POST)
 	public ModelAndView update(UpdateForm input, ModelAndView mav,
 			@RequestParam(value = "id", required = true) int id) {
+
+		ArrayList<String> prefectures = new ArrayList<>();
+		prefectures = Address.pullDownList();
+		mav.addObject("prefectures", prefectures);
 
 		boolean notHasErrors = update.update(input, mav, id);
 

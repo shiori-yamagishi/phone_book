@@ -29,12 +29,14 @@ public class RegistService {
 	public boolean regist(RegistForm input, ModelAndView mav) {
 		String name = input.getName();
 		String phoneNumber = input.getPhoneNumber();
+		String address = input.getAddress();
 		boolean registResult = true;
 
 		if (!Validation.blank(name, phoneNumber, mav)) {//空欄チェック
 			registResult = false;
 			mav.addObject("name", name);
 			mav.addObject("phoneNumber", phoneNumber);
+			mav.addObject("address", address);
 			return registResult;
 		}
 
@@ -42,11 +44,12 @@ public class RegistService {
 			registResult = false;
 			mav.addObject("name", name);
 			mav.addObject("phoneNumber", phoneNumber);
+			mav.addObject("address", address);
 			return registResult;
 		}
 
 		try {
-			phoneBookRepository.regist(name, phoneNumber);
+			phoneBookRepository.regist(name, phoneNumber, address);
 			mav.addObject("registMsg", REGIST_MESSAGE);//追加メッセージの表示（002_2)
 		} catch (Exception e) {
 			mav.addObject("registError", "追加に失敗しました");//追加失敗メッセージの表示（002_3)

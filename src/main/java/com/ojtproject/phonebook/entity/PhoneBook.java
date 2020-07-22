@@ -30,6 +30,10 @@ public class PhoneBook {
 	@Column(name = "phone_number")
 	private String phoneNumber;
 
+	/*住所*/
+	@Column(name = "address")
+	private String address;
+
 	public int getId() {
 		return id;
 	}
@@ -52,6 +56,14 @@ public class PhoneBook {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 }

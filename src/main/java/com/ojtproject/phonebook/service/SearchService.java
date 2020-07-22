@@ -1,7 +1,16 @@
 package com.ojtproject.phonebook.service;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,19 +41,36 @@ public class SearchService {
 	public void search(SearchForm input, ModelAndView mav) {
 		List<PhoneBook> phoneBookList = new ArrayList<>();
 		String keyword = input.getKeyword();//入力された名前を取得
+		String address = input.getAddress();
 
 		List<SearchResultForm> searchList = new ArrayList<>();
 		if (keyword == null) {
 			phoneBookList = phoneBookRepository.findAll();
-		} else if ("".equals(keyword)) {
+
+		} else if ("".equals(keyword) & "".equals(address)) {
 			phoneBookList = phoneBookRepository.findAll();
-		} else {
+
+		} else if (!"".equals(keyword) & "".equals(address)) {
 			if (!Validation.validateNameSearch(keyword, mav)) { //入力チェック処理
 				phoneBookList = phoneBookRepository.findAll();//入力チェックに引っかかった場合は全件表示させる
 				//return;
+
 			} else {
-				phoneBookList = phoneBookRepository.findResult(keyword);
+				phoneBookList = phoneBookRepository.findByKeyword(keyword);
 			}
+
+		} else if ("".equals(keyword) & !"".equals(address)) {
+			phoneBookList = phoneBookRepository.findByAddress(address);
+
+		} else if (!"".equals(keyword) & !"".equals(address)) {
+			if (!Validation.validateNameSearch(keyword, mav)) { //入力チェック処理
+				phoneBookList = phoneBookRepository.findAll();//入力チェックに引っかかった場合は全件表示させる
+				//return;
+
+			} else {
+				phoneBookList = phoneBookRepository.findByKeywordAndAdress(keyword, address);
+			}
+
 		}
 
 		session.setAttribute("phoneBookList", phoneBookList);
@@ -64,6 +90,7 @@ public class SearchService {
 				sf.setId(entity.getId());
 				sf.setName(entity.getName());
 				sf.setPhoneNumber(entity.getPhoneNumber());
+				sf.setAddress(entity.getAddress());
 				searchList.add(sf);
 			}
 		}
@@ -123,6 +150,7 @@ public class SearchService {
 				sf.setId(entity.getId());
 				sf.setName(entity.getName());
 				sf.setPhoneNumber(entity.getPhoneNumber());
+				sf.setAddress(entity.getAddress());
 				searchList.add(sf);
 			}
 		}
@@ -165,6 +193,68 @@ public class SearchService {
 		} catch (Exception e) {
 			mav.addObject("deleteError", "削除に失敗しました");//削除失敗メッセージ表示(001_12)
 		}
+
+	}
+
+	/*csv出力処理*/
+	public ModelAndView exportCsv(ModelAndView mav) {
+		List<PhoneBook> phoneBookList = (List<PhoneBook>) session.getAttribute("phoneBookList");
+
+		//住所のみを格納したリスト
+		List<String> addressList = new ArrayList<String>() {
+			{
+				for (int i = 0; i < phoneBookList.size(); i++) {
+					add(phoneBookList.get(i).getAddress());
+				}
+			}
+		};
+
+		//重複している住所を除く
+		ArrayList<String> notDuplicateAddress = new ArrayList<String>(new HashSet<>(addressList));
+
+		Map<String, ArrayList<PhoneBook>> export = new HashMap<>();
+
+		for (int i = 0; i < notDuplicateAddress.size(); i++) {     //住所ごとに集約されたデータを格納
+			ArrayList<PhoneBook> exportList = new ArrayList<>();
+
+			for (int j = 0; j < phoneBookList.size(); j++) {
+				if (notDuplicateAddress.get(i).equals(phoneBookList.get(j).getAddress())) {
+					exportList.add(phoneBookList.get(j));
+				}
+			}
+
+			export.put(notDuplicateAddress.get(i), exportList);  //Mapに格納
+		}
+
+		try {
+			//csvファイルの作成
+			PrintWriter pw = new PrintWriter(
+					new BufferedWriter(new OutputStreamWriter(
+							new FileOutputStream("C:\\Users\\shior\\Downloads\\電話帳アプリOJT\\ojt.csv", false),
+							"shift-JIS")));
+
+			pw.print("都道府県");
+			pw.print(",");
+			pw.print("人数");
+			pw.println();
+
+			for (Map.Entry<String, ArrayList<PhoneBook>> z : export.entrySet()) {
+				pw.print(z.getKey());
+				pw.print(",");
+				pw.print(z.getValue().size());
+				pw.println();
+			}
+
+			pw.close();//csvファイルに書き込む、ファイルを閉じる
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		mav.addObject("csv", "csv出力");
+		return mav;
 
 	}
 
