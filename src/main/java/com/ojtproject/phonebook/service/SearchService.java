@@ -44,31 +44,26 @@ public class SearchService {
 		String address = input.getAddress();
 
 		List<SearchResultForm> searchList = new ArrayList<>();
-		if (keyword == null) {
+		if (keyword == null | ("".equals(keyword) & "".equals(address))) { //初期処理画面の初期表示は全件表示、名前検索かつ住所選択が空欄だった場合も全件表示
 			phoneBookList = phoneBookRepository.findAll();
 
-		} else if ("".equals(keyword) & "".equals(address)) {
-			phoneBookList = phoneBookRepository.findAll();
-
-		} else if (!"".equals(keyword) & "".equals(address)) {
+		} else if (!"".equals(keyword) & "".equals(address)) { //名前検索が入力されているが、住所検索が空欄の場合
 			if (!Validation.validateNameSearch(keyword, mav)) { //入力チェック処理
 				phoneBookList = phoneBookRepository.findAll();//入力チェックに引っかかった場合は全件表示させる
-				//return;
 
 			} else {
 				phoneBookList = phoneBookRepository.findByKeyword(keyword);
 			}
 
-		} else if ("".equals(keyword) & !"".equals(address)) {
+		} else if ("".equals(keyword) & !"".equals(address)) { //名前検索は未入力だが、住所検索は選択されている場合
 			phoneBookList = phoneBookRepository.findByAddress(address);
 
-		} else if (!"".equals(keyword) & !"".equals(address)) {
+		} else if (!"".equals(keyword) & !"".equals(address)) { //名前も入力されていて住所検索も選択されている場合
 			if (!Validation.validateNameSearch(keyword, mav)) { //入力チェック処理
 				phoneBookList = phoneBookRepository.findAll();//入力チェックに引っかかった場合は全件表示させる
-				//return;
 
 			} else {
-				phoneBookList = phoneBookRepository.findByKeywordAndAdress(keyword, address);
+				phoneBookList = phoneBookRepository.findByKeywordAndAddress(keyword, address);
 			}
 
 		}
@@ -107,7 +102,6 @@ public class SearchService {
 			mav.addObject("isNoPage", false);
 		}
 
-		//pageNum++;
 		mav.addObject("pageNum", pageNum);
 		session.setAttribute("listPage" + pageNum, searchList);
 		mav.setViewName("search");
@@ -172,12 +166,7 @@ public class SearchService {
 	public void toPreviousPage(int pageNum, ModelAndView mav) {
 		int previousPage = pageNum - 1;
 
-		/*if (previousPage < 1) {
-			previousPage = 0;
-		}*/
-
 		mav.addObject("searchList", (List<SearchResultForm>) session.getAttribute("listPage" + previousPage));
-		//List<PhoneBook> phoneBookList = (List<PhoneBook>) session.getAttribute("phoneBookList");
 		mav.addObject("pageNum", previousPage);
 		mav.addObject("isNoPage", false);
 		mav.setViewName("search");
@@ -214,7 +203,7 @@ public class SearchService {
 
 		Map<String, ArrayList<PhoneBook>> export = new HashMap<>();
 
-		for (int i = 0; i < notDuplicateAddress.size(); i++) {     //住所ごとに集約されたデータを格納
+		for (int i = 0; i < notDuplicateAddress.size(); i++) { //住所ごとに集約されたデータを格納
 			ArrayList<PhoneBook> exportList = new ArrayList<>();
 
 			for (int j = 0; j < phoneBookList.size(); j++) {
@@ -223,15 +212,13 @@ public class SearchService {
 				}
 			}
 
-			export.put(notDuplicateAddress.get(i), exportList);  //Mapに格納
+			export.put(notDuplicateAddress.get(i), exportList); //Mapに格納
 		}
 
-		try {
-			//csvファイルの作成
-			PrintWriter pw = new PrintWriter(
-					new BufferedWriter(new OutputStreamWriter(
-							new FileOutputStream("C:\\Users\\shior\\Downloads\\電話帳アプリOJT\\ojt.csv", false),
-							"shift-JIS")));
+		try (PrintWriter pw = new PrintWriter(
+				new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream("C:\\Users\\shior\\Downloads\\電話帳アプリOJT\\ojt.csv", false),
+						"shift-JIS")));) { //csvファイルの作成
 
 			pw.print("都道府県");
 			pw.print(",");
@@ -245,15 +232,14 @@ public class SearchService {
 				pw.println();
 			}
 
-			pw.close();//csvファイルに書き込む、ファイルを閉じる
-
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		} finally {
+			//クローズ処理不要
 		}
 
-		mav.addObject("csv", "csv出力");
 		return mav;
 
 	}

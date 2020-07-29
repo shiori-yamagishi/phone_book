@@ -35,6 +35,7 @@ public class PhoneBookController {
 	/**検索ロジックを呼び出して検索ページへ遷移*/
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public ModelAndView search(SearchForm input, ModelAndView mav) {
+
 		ArrayList<String> prefectures = new ArrayList<>();
 		prefectures = Address.pullDownList();
 		mav.addObject("prefectures", prefectures);
@@ -46,9 +47,10 @@ public class PhoneBookController {
 	@RequestMapping(value = "/searchNextPage", method = RequestMethod.POST)
 	public ModelAndView next(@RequestParam(value = "pageNum", required = true) int pageNum, SearchForm input,
 			ModelAndView mav) {
-		/*ArrayList<String> prefectures = new ArrayList<>();
-		prefectures = Address.addressList();
-		mav.addObject("prefectures", prefectures);*/
+
+		ArrayList<String> prefectures = new ArrayList<>();
+		prefectures = Address.pullDownList();
+		mav.addObject("prefectures", prefectures);
 		search.toNextPage(pageNum, mav);
 		return mav;
 
@@ -58,6 +60,10 @@ public class PhoneBookController {
 	@RequestMapping(value = "/searchPreviousPage", method = RequestMethod.POST)
 	public ModelAndView previous(@RequestParam(value = "pageNum", required = true) int pageNum, SearchForm input,
 			ModelAndView mav) {
+
+		ArrayList<String> prefectures = new ArrayList<>();
+		prefectures = Address.pullDownList();
+		mav.addObject("prefectures", prefectures);
 		search.toPreviousPage(pageNum, mav);
 		return mav;
 
@@ -87,6 +93,10 @@ public class PhoneBookController {
 	/**追加画面を表示*/
 	@RequestMapping(value = "/regist", method = RequestMethod.GET)
 	public ModelAndView registInit(ModelAndView mav) {
+
+		ArrayList<String> prefectures = new ArrayList<>();
+		prefectures = Address.pullDownList();
+		mav.addObject("prefectures", prefectures);
 		regist.registInit(mav);
 		return mav;
 	}
@@ -95,6 +105,9 @@ public class PhoneBookController {
 	@RequestMapping(value = "/registnew", method = RequestMethod.POST)
 	public ModelAndView regist(RegistForm input, ModelAndView mav) {
 
+		ArrayList<String> prefectures = new ArrayList<>();
+		prefectures = Address.pullDownList();
+		mav.addObject("prefectures", prefectures);
 		boolean notHasErrors = regist.regist(input, mav);
 
 		if (!notHasErrors) {//入力チェックに引っかかった場合は、追加画面に止まる
@@ -110,6 +123,10 @@ public class PhoneBookController {
 			@RequestParam(value = "name", required = true) String name,
 			@RequestParam(value = "phoneNumber", required = true) String phoneNumber,
 			@RequestParam(value = "address", required = true) String address) {
+
+		ArrayList<String> prefectures = new ArrayList<>();
+		prefectures = Address.pullDownList();
+		mav.addObject("prefectures", prefectures);
 		update.updateInit(mav, id, name, phoneNumber, address);
 		return mav;
 	}

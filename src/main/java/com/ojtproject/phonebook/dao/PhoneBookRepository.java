@@ -26,7 +26,7 @@ public interface PhoneBookRepository extends JpaRepository<PhoneBook, Long> {
 	public List<PhoneBook> findByAddress(@Param("address") String address);
 
 	@Query(value = "SELECT p.id, p.name, p.phone_number, p.address FROM phone_book p WHERE p.name LIKE %:keyword% AND p.address = :address ORDER BY p.id", nativeQuery = true)
-	public List<PhoneBook> findByKeywordAndAdress(@Param("keyword") String keyword, @Param("address") String address);
+	public List<PhoneBook> findByKeywordAndAddress(@Param("keyword") String keyword, @Param("address") String address);
 
 	//**削除SQL*/
 	@Modifying

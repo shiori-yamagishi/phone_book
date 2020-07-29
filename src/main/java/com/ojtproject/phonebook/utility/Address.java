@@ -7,7 +7,6 @@ public class Address {
 	public static ArrayList<String> pullDownList() {
 		ArrayList<String> prefectures = new ArrayList<>();
 
-		prefectures.add("");
 		prefectures.add("未登録");
 		prefectures.add("北海道");
 		prefectures.add("青森県");
