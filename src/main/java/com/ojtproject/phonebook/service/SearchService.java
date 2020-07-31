@@ -44,10 +44,10 @@ public class SearchService {
 		String address = input.getAddress();
 
 		List<SearchResultForm> searchList = new ArrayList<>();
-		if (keyword == null | ("".equals(keyword) & "".equals(address))) { //初期処理画面の初期表示は全件表示、名前検索かつ住所選択が空欄だった場合も全件表示
+		if (keyword == null || ("".equals(keyword) & "".equals(address))) { //初期処理画面の初期表示は全件表示、名前検索かつ住所選択が空欄だった場合も全件表示
 			phoneBookList = phoneBookRepository.findAll();
 
-		} else if (!"".equals(keyword) & "".equals(address)) { //名前検索が入力されているが、住所検索が空欄の場合
+		} else if (!"".equals(keyword) && "".equals(address)) { //名前検索が入力されているが、住所検索が空欄の場合
 			if (!Validation.validateNameSearch(keyword, mav)) { //入力チェック処理
 				phoneBookList = phoneBookRepository.findAll();//入力チェックに引っかかった場合は全件表示させる
 
@@ -55,10 +55,10 @@ public class SearchService {
 				phoneBookList = phoneBookRepository.findByKeyword(keyword);
 			}
 
-		} else if ("".equals(keyword) & !"".equals(address)) { //名前検索は未入力だが、住所検索は選択されている場合
+		} else if ("".equals(keyword) && !"".equals(address)) { //名前検索は未入力だが、住所検索は選択されている場合
 			phoneBookList = phoneBookRepository.findByAddress(address);
 
-		} else if (!"".equals(keyword) & !"".equals(address)) { //名前も入力されていて住所検索も選択されている場合
+		} else if (!"".equals(keyword) && !"".equals(address)) { //名前も入力されていて住所検索も選択されている場合
 			if (!Validation.validateNameSearch(keyword, mav)) { //入力チェック処理
 				phoneBookList = phoneBookRepository.findAll();//入力チェックに引っかかった場合は全件表示させる
 
